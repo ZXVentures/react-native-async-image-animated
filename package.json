@@ -1,0 +1,21 @@
+{
+  "name": "react-native-async-image",
+  "version": "1.0.0",
+  "description": "Asynchronous loading Image component for React Native.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://www.github.com/wmcbain/react-native-async-image"
+  },
+  "keywords": [
+    "async",
+    "image",
+    "react",
+    "native"
+  ],
+  "author": "Wyatt McBain",
+  "license": "MIT"
+}
