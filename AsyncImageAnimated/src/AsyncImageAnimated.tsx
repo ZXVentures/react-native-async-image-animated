@@ -28,8 +28,9 @@ type Props = {
 type State = {
   opacity: {
     image: Animated.Value,
-    placeholder: Animated.Value
+    placeholder: Animated.Value,
   },
+  placeholderScale: Animated.Value,
   loaded: boolean
 }
 
@@ -44,8 +45,9 @@ export default class AsyncImageAnimated extends Component<Props, State> {
     this.state = {
       opacity: {
         image: new Animated.Value(0),
-        placeholder: new Animated.Value(1)
+        placeholder: new Animated.Value(0.8)
       },
+      placeholderScale: new Animated.Value(1),
       loaded: false
     }
   }
@@ -59,6 +61,7 @@ export default class AsyncImageAnimated extends Component<Props, State> {
 
     const {
       opacity,
+      placeholderScale,
       loaded
     } = this.state
 
@@ -86,7 +89,8 @@ export default class AsyncImageAnimated extends Component<Props, State> {
                   backgroundColor: placeholderColor ||
                     'transparent',
                   opacity: opacity.placeholder,
-                  position: 'absolute'
+                  position: 'absolute',
+                  transform: [{ scale: placeholderScale }]
                 }
               ]} />
           }
@@ -96,18 +100,96 @@ export default class AsyncImageAnimated extends Component<Props, State> {
   }
 
   _onLoad = () => {
+    const {
+      placeholderScale,
+      opacity: {
+        placeholder,
+        image
+      }
+    } = this.state
+    const callback = () => this.setState(() => ({ loaded: true }))
+
+    animations.shrink(
+      placeholderScale,
+      placeholder,
+      image,
+      callback
+    )
+  }
+}
+
+const animations = {
+  fade: (
+    placeholderOpacity: Animated.Value,
+    imageOpacity: Animated.Value,
+    callback?: (result:  { finished: boolean }) => void
+  ) => (
     Animated.parallel([
-      Animated.timing(this.state.opacity.placeholder, {
+      Animated.timing(placeholderOpacity, {
         toValue: 0,
         duration: 200,
         useNativeDriver: true
       }),
-      Animated.timing(this.state.opacity.image, {
+      Animated.timing(imageOpacity, {
         toValue: 1,
         delay: 0,
         duration: 300,
         useNativeDriver: true
       })
-    ]).start(() => this.setState(() => ({ loaded: true })))
-  }
+    ]).start(callback)
+  ),
+  explode: (
+    placeholderScale: Animated.Value,
+    placeholderOpacity: Animated.Value,
+    imageOpacity: Animated.Value,
+    callback?: (result:  { finished: boolean }) => void
+  ) => (
+    Animated.parallel([
+      Animated.parallel([
+        Animated.timing(placeholderOpacity, {
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: true
+        }),
+        Animated.timing(placeholderScale, {
+          toValue: 1.2,
+          duration: 200,
+          useNativeDriver: true
+        }),
+      ]),
+      Animated.timing(imageOpacity, {
+        toValue: 1,
+        delay: 0,
+        duration: 300,
+        useNativeDriver: true
+      })
+    ]).start(callback)
+  ),
+  shrink: (
+    placeholderScale: Animated.Value,
+    placeholderOpacity: Animated.Value,
+    imageOpacity: Animated.Value,
+    callback?: (result:  { finished: boolean }) => void
+  ) => (
+    Animated.parallel([
+      Animated.parallel([
+        Animated.timing(placeholderOpacity, {
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: true
+        }),
+        Animated.timing(placeholderScale, {
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: true
+        }),
+      ]),
+      Animated.timing(imageOpacity, {
+        toValue: 1,
+        delay: 0,
+        duration: 300,
+        useNativeDriver: true
+      })
+    ]).start(callback)
+  )
 }
