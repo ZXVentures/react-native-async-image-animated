@@ -1,0 +1,29 @@
+{
+	"name": "AsyncImageAnimated",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"android": "npm run build && react-native run-android",
+		"build": "tsc",
+		"build:watch": "tsc --watch",
+		"ios": "npm run build && react-native run-ios",
+		"start": "npm run build && node node_modules/react-native/local-cli/cli.js start",
+		"test": "jest"
+	},
+	"dependencies": {
+		"@types/react": "^16.0.2",
+		"@types/react-native": "^0.47.5",
+		"react": "16.0.0-alpha.12",
+		"react-native": "0.47.1",
+		"typescript": "^2.4.2"
+	},
+	"devDependencies": {
+		"babel-jest": "20.0.3",
+		"babel-preset-react-native": "3.0.0",
+		"jest": "20.0.4",
+		"react-test-renderer": "16.0.0-alpha.12"
+	},
+	"jest": {
+		"preset": "react-native"
+	}
+}

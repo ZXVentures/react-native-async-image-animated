@@ -1,0 +1,13 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "jsx": "react-native",
+    "sourceMap": true,
+    "outDir": "./lib"
+  },
+  "include": [
+    "src"
+  ]
+}
