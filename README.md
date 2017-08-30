@@ -2,6 +2,8 @@
 
 Simple cross-platform asynchronous image component for React Native 🙌🏻 with a few animation options.  Displays a placeholder color while the image loads from the network.
 
+Source is available in the `AsyncImageAnimated/src` directory. 🙂
+
 ## Exports
 
 * `AsyncImageAnimated`: Asynchronous image component

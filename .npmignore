@@ -1,0 +1,31 @@
+# OSX
+#
+.DS_Store
+
+# node.js
+#
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Remove fat for npm
+#
+.vscode
+AsyncImageAnimated/__tests__/
+AsyncImageAnimated/android/
+AsyncImageAnimated/ios/
+AsyncImageAnimated/lib/
+AsyncImageAnimated/node_modules/
+AsyncImageAnimated/.babelrc
+AsyncImageAnimated/.buckconfig
+AsyncImageAnimated/.flowconfig
+AsyncImageAnimated/.gitattributes
+AsyncImageAnimated/.watchmanconfig
+AsyncImageAnimated/app.json
+AsyncImageAnimated/index.android.js
+AsyncImageAnimated/index.ios.js
+AsyncImageAnimated/main.js
+AsyncImageAnimated/package-lock.json
+AsyncImageAnimated/package.json
+AsyncImageAnimated/tsconfig.json
+AsyncImageAnimated/yarn.lock
