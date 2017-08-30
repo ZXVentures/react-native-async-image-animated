@@ -1,5 +1,9 @@
 # AsyncImageAnimated
 
+<p align="center">
+  <img src ="https://media.giphy.com/media/X06Nr75bS7k8U/giphy.gif" />
+</p>
+
 Simple cross-platform asynchronous image component for React Native 🙌🏻 with a few animation options.  Displays a placeholder color while the image loads from the network.
 
 Source is available in the `AsyncImageAnimated/src` directory. 🙂
@@ -7,6 +11,12 @@ Source is available in the `AsyncImageAnimated/src` directory. 🙂
 ## Exports
 
 * `AsyncImageAnimated`: Asynchronous image component
+
+### Installation
+
+```
+npm i --save react-native-async-image-animated
+```
 
 ### Usage Examples
 
@@ -48,7 +58,6 @@ Run the following in the `AsyncImageAnimated` directory:
 
 ```javascript
 npm i
-npm run build
 react-native start
 npm run ios // or 'android' or 'start' for both
 ```
@@ -66,3 +75,4 @@ Then reload to view animations again.
 * [ ] Animate color of placeholder while loading
 * [ ] Placeholder image support
 * [ ] Progressive image support
+* [ ] Tests / Detox Tests

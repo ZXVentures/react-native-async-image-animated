@@ -14,7 +14,7 @@ import {
   View
 } from 'react-native'
 
-import AsyncImageAnimated from './lib/AsyncImageAnimated'
+import AsyncImageAnimated from 'react-native-async-image-animated'
 
 const uri = 'https://lh6.ggpht.com/Gg2BA4RXi96iE6Zi_hJdloQAZxO6lC6Drpdr7ouKAdCbEcE_Px-1o4r8bg8ku_xzyF4y=h900'
 const placeholderColor = '#cfd8dc'

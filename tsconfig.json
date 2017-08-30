@@ -8,10 +8,10 @@
     "outDir": "./lib"
   },
   "include": [
-    "AsyncImageAnimated/src/*"
+    "src/*"
   ],
   "exclude": [
     "node_modules",
-    "Example"
+    "AsyncImageAnimated"
   ]
 }

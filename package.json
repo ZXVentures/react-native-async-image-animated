@@ -1,6 +1,6 @@
 {
-  "name": "react-native-async-image",
-  "version": "1.0.0",
+  "name": "react-native-async-image-animated",
+  "version": "1.0.5",
   "description": "Asynchronous loading Image component for React Native.",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://www.github.com/wmcbain/react-native-async-image"
+    "url": "https://www.github.com/ZXVentures/react-native-async-image-animated"
   },
   "keywords": [
     "async",
@@ -21,14 +21,11 @@
   ],
   "author": "Wyatt McBain",
   "license": "MIT",
-  "dependencies": {
+  "devDependencies": {
     "@types/react": "^16.0.2",
     "@types/react-native": "^0.47.5",
     "react": "16.0.0-alpha.12",
-    "react-native": "0.47.0",
+    "react-native": "0.47.1",
     "typescript": "^2.4.2"
-  },
-  "devDependencies": {
-    "rimraf": "^2.6.1"
   }
 }
