@@ -14,15 +14,19 @@ import {
   View
 } from 'react-native'
 
+type AnimationStyle = 'fade' | 'shrink' | 'explode'
+
 type Props = {
   source: {
     uri: string
   },
-  placeholderColor?: string,
   style: {
     [key: string]: string | number | Object
   },
-  key?: string
+  key?: string,
+  placeholderColor?: string,
+  delay?: number,
+  animationStyle?: AnimationStyle
 }
 
 type State = {
@@ -47,13 +51,14 @@ export default class AsyncImageAnimated extends Component<Props, State> {
         image: new Animated.Value(0),
         placeholder: new Animated.Value(0.8)
       },
-      placeholderScale: new Animated.Value(1),
+      placeholderScale: new Animated.Value(1.0),
       loaded: false
     }
   }
 
   render() {
     const {
+      key,
       source,
       placeholderColor,
       style
@@ -66,7 +71,9 @@ export default class AsyncImageAnimated extends Component<Props, State> {
     } = this.state
 
     return (
-      <View style={style}>
+      <View
+        key={key}
+        style={style}>
 
         <Animated.Image
           source={source}
@@ -101,95 +108,97 @@ export default class AsyncImageAnimated extends Component<Props, State> {
 
   _onLoad = () => {
     const {
+      animationStyle,
+      delay
+    } = this.props
+
+    const {
       placeholderScale,
       opacity: {
         placeholder,
         image
       }
     } = this.state
+
     const callback = () => this.setState(() => ({ loaded: true }))
 
-    animations.shrink(
-      placeholderScale,
-      placeholder,
-      image,
-      callback
-    )
-  }
-}
+    switch (animationStyle) {
+    case 'fade':
+      return Animated.parallel([
+        Animated.timing(placeholder, {
+          delay,
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: true
+        }),
+        Animated.timing(image, {
+          delay,
+          toValue: 1,
+          duration: 300,
+          useNativeDriver: true
+        })
+      ]).start(callback)
 
-const animations = {
-  fade: (
-    placeholderOpacity: Animated.Value,
-    imageOpacity: Animated.Value,
-    callback?: (result:  { finished: boolean }) => void
-  ) => (
-    Animated.parallel([
-      Animated.timing(placeholderOpacity, {
-        toValue: 0,
-        duration: 200,
-        useNativeDriver: true
-      }),
-      Animated.timing(imageOpacity, {
-        toValue: 1,
-        delay: 0,
-        duration: 300,
-        useNativeDriver: true
-      })
-    ]).start(callback)
-  ),
-  explode: (
-    placeholderScale: Animated.Value,
-    placeholderOpacity: Animated.Value,
-    imageOpacity: Animated.Value,
-    callback?: (result:  { finished: boolean }) => void
-  ) => (
-    Animated.parallel([
-      Animated.parallel([
-        Animated.timing(placeholderOpacity, {
-          toValue: 0,
-          duration: 200,
+    case 'shrink':
+      return Animated.parallel([
+        Animated.parallel([
+          Animated.timing(placeholder, {
+            delay,
+            toValue: 0,
+            duration: 200,
+            useNativeDriver: true
+          }),
+          Animated.timing(placeholderScale, {
+            delay,
+            toValue: 0,
+            duration: 200,
+            useNativeDriver: true
+          }),
+        ]),
+        Animated.timing(image, {
+          delay,
+          toValue: 1,
+          duration: 300,
           useNativeDriver: true
-        }),
-        Animated.timing(placeholderScale, {
-          toValue: 1.2,
-          duration: 200,
-          useNativeDriver: true
-        }),
-      ]),
-      Animated.timing(imageOpacity, {
-        toValue: 1,
-        delay: 0,
-        duration: 300,
-        useNativeDriver: true
-      })
-    ]).start(callback)
-  ),
-  shrink: (
-    placeholderScale: Animated.Value,
-    placeholderOpacity: Animated.Value,
-    imageOpacity: Animated.Value,
-    callback?: (result:  { finished: boolean }) => void
-  ) => (
-    Animated.parallel([
-      Animated.parallel([
-        Animated.timing(placeholderOpacity, {
-          toValue: 0,
-          duration: 200,
-          useNativeDriver: true
-        }),
-        Animated.timing(placeholderScale, {
-          toValue: 0,
-          duration: 200,
-          useNativeDriver: true
-        }),
-      ]),
-      Animated.timing(imageOpacity, {
-        toValue: 1,
-        delay: 0,
-        duration: 300,
-        useNativeDriver: true
-      })
-    ]).start(callback)
-  )
+        })
+      ]).start(callback)
+
+    default: // explode
+      return Animated.sequence([
+        Animated.parallel([
+          Animated.timing(placeholderScale, {
+            delay,
+            toValue: 0.7,
+            duration: 100,
+            useNativeDriver: true
+          }),
+          Animated.timing(placeholder, {
+            toValue: 0.66,
+            duration: 100,
+            useNativeDriver: true
+          }),
+        ]),
+        Animated.parallel([
+          Animated.parallel([
+            Animated.timing(placeholder, {
+              toValue: 0,
+              duration: 200,
+              useNativeDriver: true
+            }),
+            Animated.timing(placeholderScale, {
+              toValue: 1.2,
+              duration: 200,
+              useNativeDriver: true
+            }),
+          ]),
+          Animated.timing(image, {
+            toValue: 1,
+            delay: 200,
+            duration: 300,
+            useNativeDriver: true
+          })
+        ])
+      ]).start(callback)
+    }
+  }
 }

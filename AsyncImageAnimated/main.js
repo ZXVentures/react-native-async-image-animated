@@ -16,6 +16,15 @@ import {
 
 import AsyncImageAnimated from './lib/AsyncImageAnimated'
 
+const uri = 'https://lh6.ggpht.com/Gg2BA4RXi96iE6Zi_hJdloQAZxO6lC6Drpdr7ouKAdCbEcE_Px-1o4r8bg8ku_xzyF4y=h900'
+const placeholderColor = '#cfd8dc'
+const style = {
+  borderRadius: 50,
+  width: 100,
+  height: 100,
+  marginVertical: 20
+}
+
 export default class Example extends Component {
   render() {
     return (
@@ -27,15 +36,25 @@ export default class Example extends Component {
         }}>
 
         <AsyncImageAnimated
-          source={{
-            uri: 'https://lh6.ggpht.com/Gg2BA4RXi96iE6Zi_hJdloQAZxO6lC6Drpdr7ouKAdCbEcE_Px-1o4r8bg8ku_xzyF4y=h900'
-          }}
-          placeholderColor='#cfd8dc'
-          style={{
-            borderRadius: 50,
-            width: 100,
-            height: 100
-          }}/>
+          delay={1000}
+          animationStyle={'fade'}
+          source={{ uri }}
+          placeholderColor={placeholderColor}
+          style={style}/>
+
+        <AsyncImageAnimated
+          delay={2000}
+          animationStyle={'shrink'}
+          source={{ uri }}
+          placeholderColor={placeholderColor}
+          style={style}/>
+
+        <AsyncImageAnimated
+          delay={3000}
+          animationStyle={'explode'}
+          source={{ uri }}
+          placeholderColor={placeholderColor}
+          style={style}/>
 
       </View>
     )

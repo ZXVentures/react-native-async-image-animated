@@ -22,5 +22,8 @@
   "license": "MIT",
   "dependencies": {
     "typescript": "^2.4.2"
+  },
+  "devDependencies": {
+    "rimraf": "^2.6.1"
   }
 }
