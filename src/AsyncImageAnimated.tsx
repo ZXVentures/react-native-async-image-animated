@@ -4,38 +4,35 @@
  * @flow
  */
 
-import * as React from "react"
-import { Component } from "react"
+import * as React from 'react'
+import { Component } from 'react'
 
 import {
   Animated,
-  AppRegistry,
-  Text,
-  View
+  View,
+  ViewStyle,
 } from 'react-native'
 
 type AnimationStyle = 'fade' | 'shrink' | 'explode'
 
-type Props = {
+interface Props {
   source: {
-    uri: string
+    uri: string,
   },
-  style: {
-    [key: string]: string | number | Object
-  },
+  style: ViewStyle,
   key?: string,
   placeholderColor?: string,
   delay?: number,
   animationStyle?: AnimationStyle
 }
 
-type State = {
+interface State {
+  loaded: boolean,
   opacity: {
     image: Animated.Value,
     placeholder: Animated.Value,
   },
   placeholderScale: Animated.Value,
-  loaded: boolean
 }
 
 export default class AsyncImageAnimated extends Component<Props, State> {
@@ -47,12 +44,12 @@ export default class AsyncImageAnimated extends Component<Props, State> {
     super(props)
 
     this.state = {
+      loaded: false,
       opacity: {
         image: new Animated.Value(0),
-        placeholder: new Animated.Value(0.8)
+        placeholder: new Animated.Value(0.8),
       },
       placeholderScale: new Animated.Value(1.0),
-      loaded: false
     }
   }
 
@@ -61,13 +58,13 @@ export default class AsyncImageAnimated extends Component<Props, State> {
       key,
       source,
       placeholderColor,
-      style
+      style,
     } = this.props
 
     const {
+      loaded,
       opacity,
       placeholderScale,
-      loaded
     } = this.state
 
     return (
@@ -83,10 +80,10 @@ export default class AsyncImageAnimated extends Component<Props, State> {
             {
               opacity: opacity.image,
               position: 'absolute',
-              resizeMode: 'contain'
-            }
+              resizeMode: 'contain',
+            },
           ]}
-          onLoad={this._onLoad} />
+          onLoad={this.onLoad} />
 
           {!loaded &&
             <Animated.View
@@ -97,8 +94,8 @@ export default class AsyncImageAnimated extends Component<Props, State> {
                     'transparent',
                   opacity: opacity.placeholder,
                   position: 'absolute',
-                  transform: [{ scale: placeholderScale }]
-                }
+                  transform: [{ scale: placeholderScale }],
+                },
               ]} />
           }
 
@@ -106,18 +103,18 @@ export default class AsyncImageAnimated extends Component<Props, State> {
     )
   }
 
-  _onLoad = () => {
+  private onLoad = () => {
     const {
       animationStyle,
-      delay
+      delay,
     } = this.props
 
     const {
       placeholderScale,
       opacity: {
+        image,
         placeholder,
-        image
-      }
+      },
     } = this.state
 
     const callback = () => this.setState(() => ({ loaded: true }))
@@ -127,16 +124,16 @@ export default class AsyncImageAnimated extends Component<Props, State> {
       return Animated.parallel([
         Animated.timing(placeholder, {
           delay,
-          toValue: 0,
           duration: 200,
-          useNativeDriver: true
+          toValue: 0,
+          useNativeDriver: true,
         }),
         Animated.timing(image, {
           delay,
-          toValue: 1,
           duration: 300,
-          useNativeDriver: true
-        })
+          toValue: 1,
+          useNativeDriver: true,
+        }),
       ]).start(callback)
 
     case 'shrink':
@@ -144,23 +141,23 @@ export default class AsyncImageAnimated extends Component<Props, State> {
         Animated.parallel([
           Animated.timing(placeholder, {
             delay,
-            toValue: 0,
             duration: 200,
-            useNativeDriver: true
+            toValue: 0,
+            useNativeDriver: true,
           }),
           Animated.timing(placeholderScale, {
             delay,
-            toValue: 0,
             duration: 200,
-            useNativeDriver: true
+            toValue: 0,
+            useNativeDriver: true,
           }),
         ]),
         Animated.timing(image, {
           delay,
-          toValue: 1,
           duration: 300,
-          useNativeDriver: true
-        })
+          toValue: 1,
+          useNativeDriver: true,
+        }),
       ]).start(callback)
 
     default: // explode
@@ -168,36 +165,36 @@ export default class AsyncImageAnimated extends Component<Props, State> {
         Animated.parallel([
           Animated.timing(placeholderScale, {
             delay,
-            toValue: 0.7,
             duration: 100,
-            useNativeDriver: true
+            toValue: 0.7,
+            useNativeDriver: true,
           }),
           Animated.timing(placeholder, {
-            toValue: 0.66,
             duration: 100,
-            useNativeDriver: true
+            toValue: 0.66,
+            useNativeDriver: true,
           }),
         ]),
         Animated.parallel([
           Animated.parallel([
             Animated.timing(placeholder, {
-              toValue: 0,
               duration: 200,
-              useNativeDriver: true
+              toValue: 0,
+              useNativeDriver: true,
             }),
             Animated.timing(placeholderScale, {
-              toValue: 1.2,
               duration: 200,
-              useNativeDriver: true
+              toValue: 1.2,
+              useNativeDriver: true,
             }),
           ]),
           Animated.timing(image, {
-            toValue: 1,
             delay: 200,
             duration: 300,
-            useNativeDriver: true
-          })
-        ])
+            toValue: 1,
+            useNativeDriver: true,
+          }),
+        ]),
       ]).start(callback)
     }
   }

@@ -1,11 +1,12 @@
 {
   "name": "react-native-async-image-animated",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "Asynchronous loading Image component for React Native.",
   "main": "index.js",
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
+    "lint": "tslint --type-check --project ./",
     "prepare": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -26,6 +27,7 @@
     "@types/react-native": "^0.47.5",
     "react": "16.0.0-alpha.12",
     "react-native": "0.47.1",
+    "tslint": "^5.7.0",
     "typescript": "^2.4.2"
   }
 }

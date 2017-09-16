@@ -1,0 +1,42 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
+    "rules": {
+        "quotemark": [
+            true,
+            "single",
+            "jsx-single",
+            "avoid-template",
+            "avoid-escape"
+        ],
+        "trailing-comma": [
+            true,
+            {
+                "multiline": "always",
+                "singleline": "never"
+            }
+        ],
+        "no-unused-variable": [
+            true,
+            {
+                "ignore-pattern": "^_"
+            }
+        ],
+        "semicolon": [
+            true,
+            "never"
+        ],
+        "interface-name": [
+            true,
+            "never-prefix"
+        ],
+        "member-access": [
+            true,
+            "no-public"
+        ]
+    },
+    "rulesDirectory": []
+}
