@@ -54,3 +54,4 @@ fastlane/screenshots
 
 # Project
 lib/
+package-lock.json

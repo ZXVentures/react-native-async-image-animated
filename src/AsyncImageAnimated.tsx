@@ -9,9 +9,12 @@ import { Component } from 'react'
 
 import {
   Animated,
+  Easing,
   View,
   ViewStyle,
 } from 'react-native'
+
+import { lightenColor } from './lib/color'
 
 type AnimationStyle = 'fade' | 'shrink' | 'explode'
 
@@ -32,6 +35,8 @@ interface State {
     image: Animated.Value,
     placeholder: Animated.Value,
   },
+  placeholderColorAnimated: Animated.Value,
+  placeholderColorLightened: string,
   placeholderScale: Animated.Value,
 }
 
@@ -49,8 +54,16 @@ export default class AsyncImageAnimated extends Component<Props, State> {
         image: new Animated.Value(0),
         placeholder: new Animated.Value(0.8),
       },
+      placeholderColorAnimated: new Animated.Value(1.0),
+      placeholderColorLightened: props.placeholderColor
+        ? lightenColor(props.placeholderColor, 20)
+        : 'transparent',
       placeholderScale: new Animated.Value(1.0),
     }
+  }
+
+  componentDidMount() {
+    this.animatePlaceholderColor()
   }
 
   render() {
@@ -65,6 +78,8 @@ export default class AsyncImageAnimated extends Component<Props, State> {
       loaded,
       opacity,
       placeholderScale,
+      placeholderColorAnimated,
+      placeholderColorLightened,
     } = this.state
 
     return (
@@ -90,8 +105,15 @@ export default class AsyncImageAnimated extends Component<Props, State> {
               style={[
                 style,
                 {
-                  backgroundColor: placeholderColor ||
-                    'transparent',
+                  backgroundColor: placeholderColor
+                    ? placeholderColorAnimated.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [
+                          placeholderColor,
+                          placeholderColorLightened,
+                        ],
+                      })
+                    : 'transparent',
                   opacity: opacity.placeholder,
                   position: 'absolute',
                   transform: [{ scale: placeholderScale }],
@@ -126,13 +148,11 @@ export default class AsyncImageAnimated extends Component<Props, State> {
           delay,
           duration: 200,
           toValue: 0,
-          useNativeDriver: true,
         }),
         Animated.timing(image, {
           delay,
           duration: 300,
           toValue: 1,
-          useNativeDriver: true,
         }),
       ]).start(callback)
 
@@ -143,20 +163,17 @@ export default class AsyncImageAnimated extends Component<Props, State> {
             delay,
             duration: 200,
             toValue: 0,
-            useNativeDriver: true,
           }),
           Animated.timing(placeholderScale, {
             delay,
             duration: 200,
             toValue: 0,
-            useNativeDriver: true,
           }),
         ]),
         Animated.timing(image, {
           delay,
           duration: 300,
           toValue: 1,
-          useNativeDriver: true,
         }),
       ]).start(callback)
 
@@ -167,12 +184,10 @@ export default class AsyncImageAnimated extends Component<Props, State> {
             delay,
             duration: 100,
             toValue: 0.7,
-            useNativeDriver: true,
           }),
           Animated.timing(placeholder, {
             duration: 100,
             toValue: 0.66,
-            useNativeDriver: true,
           }),
         ]),
         Animated.parallel([
@@ -180,22 +195,39 @@ export default class AsyncImageAnimated extends Component<Props, State> {
             Animated.timing(placeholder, {
               duration: 200,
               toValue: 0,
-              useNativeDriver: true,
             }),
             Animated.timing(placeholderScale, {
               duration: 200,
               toValue: 1.2,
-              useNativeDriver: true,
             }),
           ]),
           Animated.timing(image, {
             delay: 200,
             duration: 300,
             toValue: 1,
-            useNativeDriver: true,
           }),
         ]),
       ]).start(callback)
     }
+  }
+
+  private animatePlaceholderColor = () => {
+    const {
+      loaded,
+      placeholderColorAnimated,
+    } = this.state
+
+    if (loaded) return
+
+    Animated.sequence([
+      Animated.timing(placeholderColorAnimated, {
+        duration: 500,
+        toValue: 1.0,
+      }),
+      Animated.timing(placeholderColorAnimated, {
+        duration: 400,
+        toValue: 0.0,
+      }),
+    ]).start(this.animatePlaceholderColor)
   }
 }

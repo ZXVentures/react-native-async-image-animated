@@ -15,7 +15,7 @@
 		"@types/react-native": "^0.47.5",
 		"react": "16.0.0-alpha.12",
 		"react-native": "0.47.1",
-		"react-native-async-image-animated": "^1.0.5",
+		"react-native-async-image-animated": "^2.0.0",
 		"typescript": "^2.4.2"
 	},
 	"devDependencies": {
