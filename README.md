@@ -1,10 +1,10 @@
 # AsyncImageAnimated
 
 <p align="center">
-  <img src ="https://media.giphy.com/media/X06Nr75bS7k8U/giphy.gif" />
+  <img src ="https://media.giphy.com/media/l378cTcPS3Ki2Kfq8/giphy.gif" />
 </p>
 
-Simple cross-platform asynchronous image component for React Native 🙌🏻 with a few animation options.  Displays a placeholder color while the image loads from the network.
+Simple cross-platform asynchronous image component for React Native 🙌🏻 with a few animation options.  Displays an animated placeholder color while the image loads from the network.
 
 Source is available in the `AsyncImageAnimated/src` directory. 🙂
 
@@ -41,12 +41,10 @@ Fetch an image with a 30x30 dimension and a placeholderColor.
 
   ```javacript
   source: {
-    uri: string // Network uri
+    uri: string,
   },
-  style: { // StyleSheet or Objects will work
-    [key: string]: string | number | Object
-  },
-  key?: string, // For lists
+  style: '@types/react-native'.ViewStyle,
+  key?: string,
   placeholderColor?: string,
   delay?: number,
   animationStyle?: 'fade' | 'shrink' | 'explode'
@@ -72,7 +70,7 @@ Then reload to view animations again.
 
 ## Planned Updates
 
-* [ ] Animate color of placeholder while loading
+* [x] Animate color of placeholder while loading - v2
 * [ ] Placeholder image support
 * [ ] Progressive image support
 * [ ] Tests / Detox Tests
