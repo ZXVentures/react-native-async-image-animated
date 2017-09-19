@@ -1,6 +1,6 @@
 {
   "name": "react-native-async-image-animated",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Asynchronous loading Image component for React Native.",
   "main": "index.js",
   "scripts": {

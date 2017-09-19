@@ -1,7 +1,7 @@
 # AsyncImageAnimated
 
 <p align="center">
-  <img src ="https://media.giphy.com/media/3ov9k9Pl7fbbmtZz0c/giphy.gif" />
+  <img src ="https://media.giphy.com/media/3ov9jIB7SSbQLbwmGI/giphy.gif" />
 </p>
 
 Simple cross-platform asynchronous image component for React Native that supports progressive and placeholder images, while providing a placeholder color when one is not providedr.
