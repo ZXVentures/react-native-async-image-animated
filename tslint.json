@@ -36,6 +36,10 @@
         "member-access": [
             true,
             "no-public"
+        ],
+        "curly": [
+            true,
+            "ignore-same-line"
         ]
     },
     "rulesDirectory": []
