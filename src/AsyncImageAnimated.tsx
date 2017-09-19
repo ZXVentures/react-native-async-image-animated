@@ -65,9 +65,7 @@ export default class AsyncImageAnimated extends Component<Props, State> {
       placeholderColorLightened: props.placeholderColor
         ? lightenColor(props.placeholderColor, 20)
         : 'transparent',
-      placeholderOpacity: props.placeholderSource
-        ? new Animated.Value(1.0)
-        : new Animated.Value(0.0),
+      placeholderOpacity: new Animated.Value(1.0),
       placeholderScale: new Animated.Value(1.0),
     }
   }
