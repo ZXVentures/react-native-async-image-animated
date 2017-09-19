@@ -16,7 +16,9 @@ import {
 
 import AsyncImageAnimated from 'react-native-async-image-animated'
 
-const uri = 'https://lh6.ggpht.com/Gg2BA4RXi96iE6Zi_hJdloQAZxO6lC6Drpdr7ouKAdCbEcE_Px-1o4r8bg8ku_xzyF4y=h900'
+const uri = 'https://i.imgur.com/R5TraVR.png'
+const placeholderUri = 'https://i.imgur.com/TSl1zQR.jpg'
+
 const placeholderColor = '#cfd8dc'
 const style = {
   borderRadius: 50,
@@ -37,20 +39,28 @@ export default class Example extends Component {
 
         <AsyncImageAnimated
           delay={1000}
+          source={{ uri }}
+          placeholderSource={{
+            uri: placeholderUri
+          }}
+          style={style}/>
+
+        <AsyncImageAnimated
+          delay={2000}
           animationStyle={'fade'}
           source={{ uri }}
           placeholderColor={placeholderColor}
           style={style}/>
 
         <AsyncImageAnimated
-          delay={2000}
+          delay={3000}
           animationStyle={'shrink'}
           source={{ uri }}
           placeholderColor={placeholderColor}
           style={style}/>
 
         <AsyncImageAnimated
-          delay={3000}
+          delay={4000}
           animationStyle={'explode'}
           source={{ uri }}
           placeholderColor={placeholderColor}

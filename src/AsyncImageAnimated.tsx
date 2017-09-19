@@ -9,7 +9,6 @@ import { Component } from 'react'
 
 import {
   Animated,
-  Easing,
   View,
   ViewStyle,
 } from 'react-native'
@@ -18,25 +17,25 @@ import { lightenColor } from './lib/color'
 
 type AnimationStyle = 'fade' | 'shrink' | 'explode'
 
+interface NetworkImage { uri: string }
+type ImageSource = NetworkImage | number
+
 interface Props {
-  source: {
-    uri: string,
-  },
-  style: ViewStyle,
+  animationStyle?: AnimationStyle,
+  delay?: number,
   key?: string,
   placeholderColor?: string,
-  delay?: number,
-  animationStyle?: AnimationStyle
+  placeholderSource?: ImageSource,
+  source: NetworkImage,
+  style: ViewStyle,
 }
 
 interface State {
+  imageOpacity: Animated.Value,
   loaded: boolean,
-  opacity: {
-    image: Animated.Value,
-    placeholder: Animated.Value,
-  },
   placeholderColorAnimated: Animated.Value,
   placeholderColorLightened: string,
+  placeholderOpacity: Animated.Value,
   placeholderScale: Animated.Value,
 }
 
@@ -45,41 +44,56 @@ export default class AsyncImageAnimated extends Component<Props, State> {
   props: Props
   state: State
 
+  private animationStyle: AnimationStyle
+
   constructor(props) {
     super(props)
 
+    const { width, height } = props.style
+    if (!width || !height) {
+      throw new Error('Width and Height style props are required')
+    }
+
+    this.animationStyle = props.placeholderSource
+      ? 'fade'
+      : props.animationStyle
+
     this.state = {
+      imageOpacity: new Animated.Value(0),
       loaded: false,
-      opacity: {
-        image: new Animated.Value(0),
-        placeholder: new Animated.Value(0.8),
-      },
       placeholderColorAnimated: new Animated.Value(1.0),
       placeholderColorLightened: props.placeholderColor
         ? lightenColor(props.placeholderColor, 20)
         : 'transparent',
+      placeholderOpacity: props.placeholderSource
+        ? new Animated.Value(1.0)
+        : new Animated.Value(0.0),
       placeholderScale: new Animated.Value(1.0),
     }
   }
 
   componentDidMount() {
-    this.animatePlaceholderColor()
+    if (!this.props.placeholderSource) {
+      this.animatePlaceholderColor()
+    }
   }
 
   render() {
     const {
       key,
-      source,
       placeholderColor,
+      placeholderSource,
+      source,
       style,
     } = this.props
 
     const {
+      imageOpacity,
       loaded,
-      opacity,
-      placeholderScale,
       placeholderColorAnimated,
       placeholderColorLightened,
+      placeholderOpacity,
+      placeholderScale,
     } = this.state
 
     return (
@@ -93,32 +107,44 @@ export default class AsyncImageAnimated extends Component<Props, State> {
           style={[
             style,
             {
-              opacity: opacity.image,
+              opacity: imageOpacity,
               position: 'absolute',
               resizeMode: 'contain',
             },
           ]}
           onLoad={this.onLoad} />
 
-          {!loaded &&
-            <Animated.View
+          {(placeholderSource && !loaded) &&
+            <Animated.Image
+              source={placeholderSource}
               style={[
                 style,
                 {
-                  backgroundColor: placeholderColor
-                    ? placeholderColorAnimated.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [
-                          placeholderColor,
-                          placeholderColorLightened,
-                        ],
-                      })
-                    : 'transparent',
-                  opacity: opacity.placeholder,
+                  opacity: placeholderOpacity,
                   position: 'absolute',
-                  transform: [{ scale: placeholderScale }],
                 },
               ]} />
+          }
+
+          {(!placeholderSource && !loaded) &&
+            <Animated.View
+            style={[
+              style,
+              {
+                backgroundColor: placeholderColor
+                  ? placeholderColorAnimated.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [
+                        placeholderColor,
+                        placeholderColorLightened,
+                      ],
+                    })
+                  : 'transparent',
+                opacity: placeholderOpacity,
+                position: 'absolute',
+                transform: [{ scale: placeholderScale }],
+              },
+            ]} />
           }
 
       </View>
@@ -126,30 +152,25 @@ export default class AsyncImageAnimated extends Component<Props, State> {
   }
 
   private onLoad = () => {
-    const {
-      animationStyle,
-      delay,
-    } = this.props
+    const { delay } = this.props
 
     const {
+      imageOpacity,
+      placeholderOpacity,
       placeholderScale,
-      opacity: {
-        image,
-        placeholder,
-      },
     } = this.state
 
     const callback = () => this.setState(() => ({ loaded: true }))
 
-    switch (animationStyle) {
+    switch (this.animationStyle) {
     case 'fade':
       return Animated.parallel([
-        Animated.timing(placeholder, {
+        Animated.timing(placeholderOpacity, {
           delay,
           duration: 200,
           toValue: 0,
         }),
-        Animated.timing(image, {
+        Animated.timing(imageOpacity, {
           delay,
           duration: 300,
           toValue: 1,
@@ -159,7 +180,7 @@ export default class AsyncImageAnimated extends Component<Props, State> {
     case 'shrink':
       return Animated.parallel([
         Animated.parallel([
-          Animated.timing(placeholder, {
+          Animated.timing(placeholderOpacity, {
             delay,
             duration: 200,
             toValue: 0,
@@ -170,7 +191,7 @@ export default class AsyncImageAnimated extends Component<Props, State> {
             toValue: 0,
           }),
         ]),
-        Animated.timing(image, {
+        Animated.timing(imageOpacity, {
           delay,
           duration: 300,
           toValue: 1,
@@ -185,14 +206,14 @@ export default class AsyncImageAnimated extends Component<Props, State> {
             duration: 100,
             toValue: 0.7,
           }),
-          Animated.timing(placeholder, {
+          Animated.timing(placeholderOpacity, {
             duration: 100,
             toValue: 0.66,
           }),
         ]),
         Animated.parallel([
           Animated.parallel([
-            Animated.timing(placeholder, {
+            Animated.timing(placeholderOpacity, {
               duration: 200,
               toValue: 0,
             }),
@@ -201,7 +222,7 @@ export default class AsyncImageAnimated extends Component<Props, State> {
               toValue: 1.2,
             }),
           ]),
-          Animated.timing(image, {
+          Animated.timing(imageOpacity, {
             delay: 200,
             duration: 300,
             toValue: 1,
