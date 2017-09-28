@@ -14,7 +14,7 @@ Source is available in the `AsyncImageAnimated/src` directory. 🙂
 
 ### Installation
 
-```
+```js
 npm i --save react-native-async-image-animated
 ```
 
@@ -22,7 +22,7 @@ npm i --save react-native-async-image-animated
 
 Fetch an image with a 30x30 dimension and a placeholderColor.
 
-```javascript
+```js
 <AsyncImageAnimated
   source={{
     uri: 'https://i.imgur.com/R5TraVR.png'
@@ -37,7 +37,7 @@ Fetch an image with a 30x30 dimension and a placeholderColor.
 
 Fetch an image with a 30x30 dimension and a progressive image.
 
-```javascript
+```js
 <AsyncImageAnimated
   source={{
     uri: 'https://i.imgur.com/R5TraVR.png'
@@ -54,7 +54,7 @@ Fetch an image with a 30x30 dimension and a progressive image.
 
 Fetch an image with a 30x30 dimension and a placeholder image.
 
-```javascript
+```js
 <AsyncImageAnimated
   source={{
     uri: 'https://i.imgur.com/R5TraVR.png'
@@ -71,7 +71,7 @@ Fetch an image with a 30x30 dimension and a placeholder image.
 
 * `AsyncImageAnimated`:
 
-  ```javacript
+  ```js
   animationStyle?: 'fade' | 'shrink' | 'explode',
   delay?: number,
   key?: string,
@@ -89,7 +89,7 @@ Fetch an image with a 30x30 dimension and a placeholder image.
 
 Run the following in the `AsyncImageAnimated` directory:
 
-```javascript
+```js
 npm i
 react-native start
 npm run ios // or 'android' or 'start' for both
