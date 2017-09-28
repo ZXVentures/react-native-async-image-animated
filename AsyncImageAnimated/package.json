@@ -3,11 +3,9 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"android": "npm run build && react-native run-android",
-		"build": "tsc",
-		"build:watch": "tsc --watch",
-		"ios": "npm run build && react-native run-ios",
-		"start": "npm run build && node node_modules/react-native/local-cli/cli.js start",
+		"android": "react-native run-android",
+		"ios": "react-native run-ios",
+		"start": "node node_modules/react-native/local-cli/cli.js start",
 		"test": "jest"
 	},
 	"dependencies": {
@@ -15,7 +13,7 @@
 		"@types/react-native": "^0.47.5",
 		"react": "16.0.0-alpha.12",
 		"react-native": "0.47.1",
-		"react-native-async-image-animated": "^3.0.0",
+		"react-native-async-image-animated": "file:../",
 		"typescript": "^2.4.2"
 	},
 	"devDependencies": {
