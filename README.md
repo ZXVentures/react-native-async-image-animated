@@ -14,7 +14,7 @@ Source is available in the `AsyncImageAnimated/src` directory. 🙂
 
 ### Installation
 
-```js
+```bash
 npm i --save react-native-async-image-animated
 ```
 
@@ -89,7 +89,7 @@ Fetch an image with a 30x30 dimension and a placeholder image.
 
 Run the following in the `AsyncImageAnimated` directory:
 
-```js
+```bash
 npm i
 react-native start
 npm run ios // or 'android' or 'start' for both
