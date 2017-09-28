@@ -31,6 +31,7 @@ interface Props {
 }
 
 interface State {
+  failed: boolean,
   imageOpacity: Animated.Value,
   loaded: boolean,
   placeholderColorAnimated: Animated.Value,
@@ -59,6 +60,7 @@ export default class AsyncImageAnimated extends Component<Props, State> {
       : props.animationStyle
 
     this.state = {
+      failed: false,
       imageOpacity: new Animated.Value(0),
       loaded: false,
       placeholderColorAnimated: new Animated.Value(1.0),
@@ -86,6 +88,7 @@ export default class AsyncImageAnimated extends Component<Props, State> {
     } = this.props
 
     const {
+      failed,
       imageOpacity,
       loaded,
       placeholderColorAnimated,
@@ -99,18 +102,21 @@ export default class AsyncImageAnimated extends Component<Props, State> {
         key={key}
         style={style}>
 
-        <Animated.Image
-          source={source}
-          resizeMode={'contain'}
-          style={[
-            style,
-            {
-              opacity: imageOpacity,
-              position: 'absolute',
-              resizeMode: 'contain',
-            },
-          ]}
-          onLoad={this.onLoad} />
+        {!failed &&
+          <Animated.Image
+            source={source}
+            resizeMode={'contain'}
+            style={[
+              style,
+              {
+                opacity: imageOpacity,
+                position: 'absolute',
+                resizeMode: 'contain',
+              },
+            ]}
+            onLoad={this.onLoad}
+            onError={this.onError} />
+        }
 
           {(placeholderSource && !loaded) &&
             <Animated.Image
@@ -147,6 +153,17 @@ export default class AsyncImageAnimated extends Component<Props, State> {
 
       </View>
     )
+  }
+
+  private onError = () => {
+    this.setState(() => ({
+      failed: true,
+    }), () => {
+      Animated.timing(this.state.placeholderColorAnimated, {
+        duration: 200,
+        toValue: 0.0,
+      }).start()
+    })
   }
 
   private onLoad = () => {
@@ -232,11 +249,12 @@ export default class AsyncImageAnimated extends Component<Props, State> {
 
   private animatePlaceholderColor = () => {
     const {
+      failed,
       loaded,
       placeholderColorAnimated,
     } = this.state
 
-    if (loaded) return
+    if (failed || loaded) return
 
     Animated.sequence([
       Animated.timing(placeholderColorAnimated, {

@@ -10,4 +10,5 @@ yarn-error.log
 
 # Project
 lib/
+package-lock.json
 AsyncImageAnimated/package-lock.json

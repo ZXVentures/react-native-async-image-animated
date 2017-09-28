@@ -22,11 +22,13 @@
   ],
   "author": "Wyatt McBain",
   "license": "MIT",
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
   "devDependencies": {
     "@types/react": "^16.0.2",
     "@types/react-native": "^0.47.5",
-    "react": "16.0.0-alpha.12",
-    "react-native": "0.47.1",
     "tslint": "^5.7.0",
     "typescript": "^2.4.2"
   }

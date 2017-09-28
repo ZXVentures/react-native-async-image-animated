@@ -40,6 +40,10 @@
         "curly": [
             true,
             "ignore-same-line"
+        ],
+        "arrow-parens": [
+            true,
+            "ban-single-arg-parens"
         ]
     },
     "rulesDirectory": []
