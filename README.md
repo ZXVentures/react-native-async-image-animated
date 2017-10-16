@@ -74,7 +74,7 @@ Fetch an image with a 30x30 dimension and a placeholder image.
   ```javacript
   animationStyle?: 'fade' | 'shrink' | 'explode',
   delay?: number,
-  key?: string,
+  imageKey?: string,
   placeholderColor?: string,
   placeholderSource?: { uri: string } | number,
   source: { uri: string }, // required
