@@ -23,7 +23,7 @@ type ImageSource = NetworkImage | number
 interface Props {
   animationStyle?: AnimationStyle,
   delay?: number,
-  key?: string,
+  imageKey?: string,
   placeholderColor?: string,
   placeholderSource?: ImageSource,
   source: NetworkImage,
@@ -80,7 +80,7 @@ export default class AsyncImageAnimated extends Component<Props, State> {
 
   render() {
     const {
-      key,
+      imageKey,
       placeholderColor,
       placeholderSource,
       source,
@@ -98,12 +98,11 @@ export default class AsyncImageAnimated extends Component<Props, State> {
     } = this.state
 
     return (
-      <View
-        key={key}
-        style={style}>
+      <View style={style}>
 
         {!failed &&
           <Animated.Image
+            key={imageKey}
             source={source}
             resizeMode={'contain'}
             style={[
@@ -118,38 +117,38 @@ export default class AsyncImageAnimated extends Component<Props, State> {
             onError={this.onError} />
         }
 
-          {(placeholderSource && !loaded) &&
-            <Animated.Image
-              source={placeholderSource}
-              style={[
-                style,
-                {
-                  opacity: placeholderOpacity,
-                  position: 'absolute',
-                },
-              ]} />
-          }
+        {(placeholderSource && !loaded) &&
+          <Animated.Image
+            source={placeholderSource}
+            style={[
+              style,
+              {
+                opacity: placeholderOpacity,
+                position: 'absolute',
+              },
+            ]} />
+        }
 
-          {(!placeholderSource && !loaded) &&
-            <Animated.View
+        {(!placeholderSource && !loaded) &&
+          <Animated.View
             style={[
               style,
               {
                 backgroundColor: placeholderColor
                   ? placeholderColorAnimated.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [
-                        placeholderColor,
-                        placeholderColorLightened,
-                      ],
-                    })
+                    inputRange: [0, 1],
+                    outputRange: [
+                      placeholderColor,
+                      placeholderColorLightened,
+                    ],
+                  })
                   : 'transparent',
                 opacity: placeholderOpacity,
                 position: 'absolute',
                 transform: [{ scale: placeholderScale }],
               },
             ]} />
-          }
+        }
 
       </View>
     )
@@ -178,72 +177,72 @@ export default class AsyncImageAnimated extends Component<Props, State> {
     const callback = () => this.setState(() => ({ loaded: true }))
 
     switch (this.animationStyle) {
-    case 'fade':
-      return Animated.parallel([
-        Animated.timing(placeholderOpacity, {
-          delay,
-          duration: 200,
-          toValue: 0,
-        }),
-        Animated.timing(imageOpacity, {
-          delay,
-          duration: 300,
-          toValue: 1,
-        }),
-      ]).start(callback)
-
-    case 'shrink':
-      return Animated.parallel([
-        Animated.parallel([
+      case 'fade':
+        return Animated.parallel([
           Animated.timing(placeholderOpacity, {
             delay,
             duration: 200,
             toValue: 0,
           }),
-          Animated.timing(placeholderScale, {
+          Animated.timing(imageOpacity, {
             delay,
-            duration: 200,
-            toValue: 0,
+            duration: 300,
+            toValue: 1,
           }),
-        ]),
-        Animated.timing(imageOpacity, {
-          delay,
-          duration: 300,
-          toValue: 1,
-        }),
-      ]).start(callback)
+        ]).start(callback)
 
-    default: // explode
-      return Animated.sequence([
-        Animated.parallel([
-          Animated.timing(placeholderScale, {
-            delay,
-            duration: 100,
-            toValue: 0.7,
-          }),
-          Animated.timing(placeholderOpacity, {
-            duration: 100,
-            toValue: 0.66,
-          }),
-        ]),
-        Animated.parallel([
+      case 'shrink':
+        return Animated.parallel([
           Animated.parallel([
             Animated.timing(placeholderOpacity, {
+              delay,
               duration: 200,
               toValue: 0,
             }),
             Animated.timing(placeholderScale, {
+              delay,
               duration: 200,
-              toValue: 1.2,
+              toValue: 0,
             }),
           ]),
           Animated.timing(imageOpacity, {
-            delay: 200,
+            delay,
             duration: 300,
             toValue: 1,
           }),
-        ]),
-      ]).start(callback)
+        ]).start(callback)
+
+      default: // explode
+        return Animated.sequence([
+          Animated.parallel([
+            Animated.timing(placeholderScale, {
+              delay,
+              duration: 100,
+              toValue: 0.7,
+            }),
+            Animated.timing(placeholderOpacity, {
+              duration: 100,
+              toValue: 0.66,
+            }),
+          ]),
+          Animated.parallel([
+            Animated.parallel([
+              Animated.timing(placeholderOpacity, {
+                duration: 200,
+                toValue: 0,
+              }),
+              Animated.timing(placeholderScale, {
+                duration: 200,
+                toValue: 1.2,
+              }),
+            ]),
+            Animated.timing(imageOpacity, {
+              delay: 200,
+              duration: 300,
+              toValue: 1,
+            }),
+          ]),
+        ]).start(callback)
     }
   }
 
