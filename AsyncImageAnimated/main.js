@@ -11,6 +11,7 @@ import {
   Animated,
   AppRegistry,
   Text,
+  StyleSheet,
   View
 } from 'react-native'
 
@@ -26,6 +27,10 @@ const style = {
   height: 100,
   marginVertical: 20
 }
+
+const firstStyle = StyleSheet.create({
+  first: style
+})
 
 export default class Example extends Component {
   render() {
@@ -43,28 +48,28 @@ export default class Example extends Component {
           placeholderSource={{
             uri: placeholderUri
           }}
-          style={style}/>
+          style={style} />
 
         <AsyncImageAnimated
           delay={2000}
           animationStyle={'fade'}
           source={{ uri }}
           placeholderColor={placeholderColor}
-          style={style}/>
+          style={style} />
 
         <AsyncImageAnimated
           delay={3000}
           animationStyle={'shrink'}
           source={{ uri }}
           placeholderColor={placeholderColor}
-          style={style}/>
+          style={style} />
 
         <AsyncImageAnimated
           delay={4000}
           animationStyle={'explode'}
           source={{ uri }}
           placeholderColor={placeholderColor}
-          style={style}/>
+          style={style} />
 
       </View>
     )

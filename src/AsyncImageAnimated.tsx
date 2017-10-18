@@ -9,6 +9,7 @@ import { Component } from 'react'
 
 import {
   Animated,
+  StyleSheet,
   View,
   ViewStyle,
 } from 'react-native'
@@ -50,7 +51,11 @@ export default class AsyncImageAnimated extends Component<Props, State> {
   constructor(props) {
     super(props)
 
-    const { width, height } = props.style
+    const style = typeof props.style === 'number'
+      ? StyleSheet.flatten(props.style)
+      : props.style
+
+    const { width, height } = style
     if (!width || !height) {
       throw new Error('Width and Height style props are required')
     }
