@@ -19,6 +19,7 @@
                 "singleline": "never"
             }
         ],
+        "no-console": false,
         "no-unused-variable": [
             true,
             {

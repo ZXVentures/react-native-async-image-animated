@@ -57,7 +57,7 @@ export default class AsyncImageAnimated extends Component<Props, State> {
 
     const { width, height } = style
     if (!width || !height) {
-      throw new Error('Width and Height style props are required')
+      if (__DEV__) console.warn('AsyncImageAnimated: Width and height should be defined in styles.')
     }
 
     this.animationStyle = props.placeholderSource
