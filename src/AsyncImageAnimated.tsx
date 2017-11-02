@@ -130,6 +130,7 @@ export default class AsyncImageAnimated extends Component<Props, State> {
               {
                 opacity: placeholderOpacity,
                 position: 'absolute',
+                resizeMode: 'contain',
               },
             ]} />
         }
