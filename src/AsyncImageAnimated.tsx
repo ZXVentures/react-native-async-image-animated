@@ -17,6 +17,7 @@ import {
 import { lightenColor } from './lib/color'
 
 type AnimationStyle = 'fade' | 'shrink' | 'explode'
+type ResizeMode = 'cover' | 'contain' | 'stretch' | 'repeat' | 'center'
 
 interface NetworkImage { uri: string }
 type ImageSource = NetworkImage | number
@@ -29,7 +30,7 @@ interface Props {
   placeholderSource?: ImageSource,
   source: NetworkImage,
   style: ViewStyle,
-  resizeMode: string
+  resizeMode: ResizeMode
 }
 
 interface State {
