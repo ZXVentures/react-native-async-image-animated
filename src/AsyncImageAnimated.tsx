@@ -17,6 +17,7 @@ import {
 import { lightenColor } from './lib/color'
 
 type AnimationStyle = 'fade' | 'shrink' | 'explode'
+type ResizeMode = 'cover' | 'contain' | 'stretch' | 'repeat' | 'center'
 
 interface NetworkImage { uri: string }
 type ImageSource = NetworkImage | number
@@ -29,6 +30,7 @@ interface Props {
   placeholderSource?: ImageSource,
   source: NetworkImage,
   style: ViewStyle,
+  resizeMode: ResizeMode
 }
 
 interface State {
@@ -90,6 +92,7 @@ export default class AsyncImageAnimated extends Component<Props, State> {
       placeholderSource,
       source,
       style,
+      resizeMode
     } = this.props
 
     const {
@@ -109,13 +112,13 @@ export default class AsyncImageAnimated extends Component<Props, State> {
           <Animated.Image
             key={imageKey}
             source={source}
-            resizeMode={'contain'}
+            resizeMode={resizeMode || 'contain'}
             style={[
               style,
               {
                 opacity: imageOpacity,
                 position: 'absolute',
-                resizeMode: 'contain',
+                resizeMode: resizeMode || 'contain',
               },
             ]}
             onLoad={this.onLoad}
