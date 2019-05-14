@@ -29,6 +29,7 @@ interface Props {
   placeholderSource?: ImageSource,
   source: NetworkImage,
   style: ViewStyle,
+  resizeMode?: string
 }
 
 interface State {
@@ -92,6 +93,10 @@ export default class AsyncImageAnimated extends Component<Props, State> {
       style,
     } = this.props
 
+    let {
+      resizeMode
+    } = this.props
+
     const {
       failed,
       imageOpacity,
@@ -102,6 +107,8 @@ export default class AsyncImageAnimated extends Component<Props, State> {
       placeholderScale,
     } = this.state
 
+    resizeMode = resizeMode === "" ? 'contain' : resizeMode
+
     return (
       <View style={style}>
 
@@ -109,13 +116,13 @@ export default class AsyncImageAnimated extends Component<Props, State> {
           <Animated.Image
             key={imageKey}
             source={source}
-            resizeMode={'contain'}
+            resizeMode={resizeMode}
             style={[
               style,
               {
                 opacity: imageOpacity,
                 position: 'absolute',
-                resizeMode: 'contain',
+                resizeMode: resizeMode,
               },
             ]}
             onLoad={this.onLoad}
@@ -130,7 +137,7 @@ export default class AsyncImageAnimated extends Component<Props, State> {
               {
                 opacity: placeholderOpacity,
                 position: 'absolute',
-                resizeMode: 'contain',
+                resizeMode: resizeMode,
               },
             ]} />
         }
